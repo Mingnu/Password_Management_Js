@@ -1,28 +1,36 @@
 import React, { useState } from 'react';
 import { Pencil, Trash2, Eye, Copy, EyeOff } from 'lucide-react';
+import { toast } from 'react-hot-toast';
 
 export default function PasswordCard({ 
   title = "facebook", 
   username = "admin", 
-  password = "password123" 
+  password = "password123",
+  onEdit,
+  onDelete
 }) {
   const [showPassword, setShowPassword] = useState(false);
   
   // Create a display string of dots if not showing password
   const displayPassword = showPassword ? password : '••••••••';
 
+  const handleCopy = () => {
+    navigator.clipboard.writeText(password);
+    toast.success('Đã sao chép mật khẩu!');
+  };
+
   return (
-    <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.04)] border border-gray-50 max-w-md w-full">
+    <div className="bg-white rounded-3xl p-6 sm:p-8 shadow-[0_4px_24px_rgba(0,0,0,0.04)] border border-gray-50 w-full">
       <div className="flex justify-between items-start mb-6">
         <div>
           <h3 className="text-2xl font-serif font-bold text-gray-900 tracking-tight">{title}</h3>
           <p className="text-slate-500 text-base mt-1">{username}</p>
         </div>
         <div className="flex items-center gap-4 pt-1">
-          <button className="text-slate-700 hover:text-black transition-colors cursor-pointer">
+          <button onClick={onEdit} className="text-slate-700 hover:text-black transition-colors cursor-pointer">
             <Pencil strokeWidth={2.5} className="w-5 h-5" />
           </button>
-          <button className="text-slate-700 hover:text-black transition-colors cursor-pointer">
+          <button onClick={onDelete} className="text-slate-700 hover:text-black transition-colors cursor-pointer">
             <Trash2 strokeWidth={2.5} className="w-5 h-5" />
           </button>
         </div>
@@ -43,7 +51,7 @@ export default function PasswordCard({
           <button 
             className="text-slate-700 hover:text-black transition-colors cursor-pointer"
             title="Copy password"
-            onClick={() => navigator.clipboard.writeText(password)}
+            onClick={handleCopy}
           >
             <Copy strokeWidth={2.5} className="w-5 h-5" />
           </button>
